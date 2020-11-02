@@ -26,7 +26,6 @@ public class Flow {
     private final Model model;
     private Condition condition;
     private final boolean consume;
-    private boolean continueAtRootFlag;
     private boolean callerFlag;
 
     public Flow(String flowName, Model model, boolean consume) {
@@ -35,16 +34,8 @@ public class Flow {
         this.consume = consume;
     }
 
-    boolean isContinueAtRootFlag() {
-        return continueAtRootFlag;
-    }
-
     boolean isCallerFlag() {
         return callerFlag;
-    }
-
-    void setContinueAtRootFlag() {
-        continueAtRootFlag = true;
     }
 
     void setCallerFlag() {

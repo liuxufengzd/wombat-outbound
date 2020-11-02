@@ -1,9 +1,9 @@
-package com.rakuten.ecld.wms.wombatoutbound.service.command.common.impl;
+package com.rakuten.ecld.wms.wombatoutbound.service.common.impl;
 
 import com.rakuten.ecld.wms.wombatoutbound.entity.BadItem;
 import com.rakuten.ecld.wms.wombatoutbound.entity.Item;
 import com.rakuten.ecld.wms.wombatoutbound.mapper.BadItemMapper;
-import com.rakuten.ecld.wms.wombatoutbound.service.command.common.BadItemService;
+import com.rakuten.ecld.wms.wombatoutbound.service.common.BadItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +16,12 @@ public class BadItemServiceImpl implements BadItemService {
 
     @Override
     public void badItemLogin(Item item, String type, int number) {
-        badItemMapper.setBadFlag(item.getDeliveryCode(), item.getItemCode());
         badItemMapper.addBadItem(item.getDeliveryCode(), item.getItemCode(), type, number);
+    }
+
+    @Override
+    public void setBadItemFlag(Item item) {
+        badItemMapper.setBadFlag(item.getDeliveryCode(), item.getItemCode());
     }
 
     @Override

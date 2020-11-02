@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 @Getter
 public class PtgState extends BaseState {
-    private long startTime;
     private boolean batchRegistered;
     private boolean pickFinished;
+    private boolean nextItemFound = true;
     private String batch;
     private int pickNumber;
     private int pickedNumber;

@@ -5,6 +5,7 @@ import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.CliHandler;
 import com.rakuten.ecld.wms.wombatoutbound.command.picktogo.model.PtgState;
 import com.rakuten.ecld.wms.wombatoutbound.entity.Item;
 import com.rakuten.ecld.wms.wombatoutbound.service.command.picktogo.PtgDeliveryService;
+import com.rakuten.ecld.wms.wombatoutbound.service.common.BadItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class FindPickItemProcess extends AbstractBaseStepHandler<PtgState> {
     private final PtgDeliveryService ptgDeliveryService;
+    private final BadItemService badItemService;
 
     @Override
     public void process(CliHandler<PtgState> cliHandler) {
@@ -21,8 +23,11 @@ public class FindPickItemProcess extends AbstractBaseStepHandler<PtgState> {
 
         PtgState state = cliHandler.getState();
         Item item = ptgDeliveryService.findNextItemToPick(state.getBatch());
-        state.setNumberExcludeBadItem(Integer.parseInt(item.getNumber()));
-
+        if (item == null){
+            state.setNextItemFound(false);
+            return;
+        }
+        state.setNumberExcludeBadItem(Integer.parseInt(item.getNumber()) - badItemService.badItemNumber(item));
         state.setItem(item);
     }
 }

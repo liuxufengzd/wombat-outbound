@@ -49,7 +49,7 @@ public class ItemFix extends BaseCommandHandler<IfState> implements CommandHandl
                 .step("start-item-fix",true).run(StartItemFixProcess.class)
                 .step("item-code-question").run(ItemCodeQuestion.class)
                 .step("item-code-estimate",true).run(ItemFixItemCodeEstimate.class)
-                .YNStep("item-code-question")
+                .YNStep(null,"item-code-question")
                 .step("end-item-fix").run(EndItemFixProcess.class)
             .build();
     }

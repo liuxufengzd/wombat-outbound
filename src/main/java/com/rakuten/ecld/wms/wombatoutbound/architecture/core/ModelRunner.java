@@ -72,12 +72,14 @@ public class ModelRunner {
                 } else break;
                 // In our business, the xxxQuestion step must be followed by xxxEstimate step
                 // So the question phrase will be repeated if the xxxEstimate step is failed
-                if (cliHandler.isFailed()){
+                if (cliHandler.isFailed()) {
                     doExecute(latestStep);
                     break;
                 }
                 if (stepToRun.isContinueAtRootFlag() && !skipFlag) {
-                    stepToRun = model.findStep(flowToRootStep.get(stepToRun.getFlow().getFlowName()));
+                    String flowName = stepToRun.getFlow().getFlowName();
+                    stepToRun = model.findStep(flowToRootStep.get(flowName));
+                    flowToRootStep.remove(flowName);
                 } else stepToRun = findNextStepToRun();
             } else {
                 endFlag = true;
@@ -105,7 +107,7 @@ public class ModelRunner {
         stepPosition = step;
     }
 
-    private void doExecute(Step step){
+    private void doExecute(Step step) {
         StepHandler stepHandler = step.getStepHandler();
         if (stepHandler != null)
             stepHandler.execute(cliHandler);
@@ -149,18 +151,19 @@ public class ModelRunner {
     }
 
     private void updateBaseState(Step caller, Step callee) {
-        if (callee.getFlow().isContinueAtRootFlag()) {
-            if (caller.isRootStep()) {
-                flowToRootStep.put(callee.getFlow().getFlowName(), caller.getName());
-            } else if (caller.getFlow().isContinueAtRootFlag()) {
-                String stepName = flowToRootStep.get(caller.getFlow().getFlowName());
-                if (stepName == null)
-                    throw new RuntimeException("No root step has been found for step: " + callee.getName());
-                flowToRootStep.put(callee.getFlow().getFlowName(), stepName);
-            } else throw new RuntimeException("No root step has been found for step: " + callee.getName());
+        if (caller.isRootStep()) {
+            flowToRootStep.put(callee.getFlow().getFlowName(), caller.getName());
+        } else {
+            String flowName = caller.getFlow().getFlowName();
+            String rootStep = flowToRootStep.get(flowName);
+            if (rootStep != null) {
+                flowToRootStep.remove(flowName);
+                flowToRootStep.put(callee.getFlow().getFlowName(), rootStep);
+            }
         }
-        if (callee.getFlow().isCallerFlag()) {
+        if (callee.getFlow().isCallerFlag())
             flowToCallerStep.put(callee.getFlow().getFlowName(), caller.getName());
-        }
+        if (caller.getFlow().isCallerFlag() && (caller.getFlow() != callee.getFlow()))
+            flowToCallerStep.remove(caller.getFlow().getFlowName());
     }
 }

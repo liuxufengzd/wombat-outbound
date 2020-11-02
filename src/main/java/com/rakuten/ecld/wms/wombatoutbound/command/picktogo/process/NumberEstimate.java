@@ -11,13 +11,13 @@ import static com.rakuten.ecld.wms.wombatoutbound.constant.CommandConstant.POSIT
 @Component
 @Slf4j
 public class NumberEstimate extends AbstractBaseStepHandler<PtgState> {
+
     @Override
     public void process(CliHandler<PtgState> cliHandler) {
         log.info("step --> number estimate");
 
-        int requiredNumber = Integer.parseInt(cliHandler.getState().getItem().getNumber());
         int input = Integer.parseInt(cliHandler.getInput());
-        if (requiredNumber < input) {
+        if (cliHandler.getState().getNumberExcludeBadItem() < input) {
             cliHandler.fail(messageSourceUtil.getMessage("outbound.common.number.above"));
             return;
         }

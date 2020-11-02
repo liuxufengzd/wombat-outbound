@@ -3,7 +3,7 @@ package com.rakuten.ecld.wms.wombatoutbound.command.itemfix.process;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.common.AbstractBaseStepHandler;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.CliHandler;
 import com.rakuten.ecld.wms.wombatoutbound.command.itemfix.model.IfState;
-import com.rakuten.ecld.wms.wombatoutbound.service.command.common.BadItemService;
+import com.rakuten.ecld.wms.wombatoutbound.service.common.BadItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class ItemFixItemCodeEstimate extends AbstractBaseStepHandler<IfState> {
         log.info("step --> item code estimate");
 
         badItemService.fixBadItem(cliHandler.getInput());
-        cliHandler.response(messageSourceUtil.getMessage("outbound.command.ifix.item_complete",cliHandler.getInput()));
+        cliHandler.response(messageSourceUtil.getMessage("outbound.command.ifix.item_complete",new String[]{cliHandler.getInput()}));
         cliHandler.response(messageSourceUtil.getMessage("outbound.command.ifix.continue_ifix"));
     }
 

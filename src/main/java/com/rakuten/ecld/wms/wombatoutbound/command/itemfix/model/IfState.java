@@ -1,9 +1,10 @@
 package com.rakuten.ecld.wms.wombatoutbound.command.itemfix.model;
 
+import com.rakuten.ecld.wms.wombatoutbound.architecture.common.BaseState;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class IfState {
+@Setter
+public class IfState extends BaseState {
 }

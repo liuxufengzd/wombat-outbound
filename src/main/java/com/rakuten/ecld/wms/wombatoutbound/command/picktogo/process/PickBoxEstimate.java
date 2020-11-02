@@ -29,6 +29,7 @@ public class PickBoxEstimate extends AbstractBaseStepHandler<PtgState> {
         int pickNumber = state.getPickNumber();
         ptgDeliveryService.pickItem(state.getItem().getDeliveryCode(), state.getItem().getItemCode(), pickNumber);
         state.setPickedNumber(state.getPickedNumber()+pickNumber);
+
     }
 
     @Override

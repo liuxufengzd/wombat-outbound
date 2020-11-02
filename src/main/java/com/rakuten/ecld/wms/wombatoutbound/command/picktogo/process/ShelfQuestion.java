@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class ShelfQuestion extends AbstractBaseStepHandler<PtgState> {
+
     @Override
     public void process(CliHandler<PtgState> cliHandler) {
         log.info("step --> shelf question");
@@ -20,7 +21,7 @@ public class ShelfQuestion extends AbstractBaseStepHandler<PtgState> {
         cliHandler.response(item.getItemCode()+"(商品コード)");
         cliHandler.response(item.getName()+"(商品名)");
         cliHandler.response(item.getSource()+"(著者)");
-        cliHandler.response("QTY "+item.getNumber());
+        cliHandler.response("QTY " + cliHandler.getState().getNumberExcludeBadItem());
         cliHandler.response(messageSourceUtil.getMessage("outbound.common.shelf.question"));
     }
 }

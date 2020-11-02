@@ -4,7 +4,7 @@ import com.rakuten.ecld.wms.wombatoutbound.architecture.common.AbstractBaseStepH
 import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.CliHandler;
 import com.rakuten.ecld.wms.wombatoutbound.command.picktogo.model.PtgState;
 import com.rakuten.ecld.wms.wombatoutbound.entity.BadItem;
-import com.rakuten.ecld.wms.wombatoutbound.service.command.common.BadItemService;
+import com.rakuten.ecld.wms.wombatoutbound.service.common.BadItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,8 +21,8 @@ public class QAProcess extends AbstractBaseStepHandler<PtgState> {
     public void process(CliHandler<PtgState> cliHandler) {
         log.info("step --> QA process");
 
-        if (cliHandler.getState().getNumberExcludeBadItem() > 0){
-            List<BadItem> badItems = badItemService.findAllBadItems();
+        List<BadItem> badItems = badItemService.findAllBadItems();
+        if (!badItems.isEmpty()){
             badItems.forEach(badItem -> {
                 cliHandler.response("間口ー箱ラベル: "+badItem.getBoxArea()+"-"+badItem.getBoxLabel());
                 cliHandler.response("納品書番号： "+badItem.getDeliveryCode());

@@ -60,6 +60,7 @@ public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHan
                     .step("register-uncompleted", this::hasBatchNotRegistered).continueAt("register-question")
                     .step("complete-register").run(RegisterCompleteProcess.class)
                     .step("start-pick").run(FindPickItemProcess.class)
+                    .step("item-not-found",this::nextItemNotFound).continueAt("QA-process")
                     .step("identity-confirm", this::isVeteran).continueAt("item-code-question")
                     .rootStep("shelf-question").size(SHELF_CODE_MAX).allowShortcut(Action.BREAK, Action.SHORT, Action.DAMAGE).run(ShelfQuestion.class)
                     .step("shelf-estimate", true).run(ShelfEstimate.class)
@@ -74,11 +75,11 @@ public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHan
                     .step("batch-not-picked", this::hasPickNotFinished).continueAt("start-pick")
                     .step("QA-process").run(QAProcess.class)
                     .step("continue-question").run(ContinueQuestion.class)
-                    .YNStep(null,"start-ptg")
+                    .YNStep(null,"delivery-question")
                     .step("end-ptg").run(EndPickToGoProcess.class)
 
                 .flow("batch-registered").after(this::hasBatchRegistered, "delivery-estimate")
-                    .step("pick-finished", this::hasPickFinished).continueAt("delivery-question")
+                    .step("pick-finished", this::hasPickFinished).continueAt("end-ptg")
                     .step("continue-process").runAndContinueAt(ContinueProcess.class, "start-pick")
                 .flow("change-delivery-code", true)
                     .after(this::hasUserEnteredCdl, "register-question", "box-label-question")
@@ -106,7 +107,7 @@ public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHan
                     .step("short-number-enough").callerIs("short-question").continueAt("short-login-complete")
                     .step("damage-number-enough").callerIs("damage-question").continueAt("damage-login-complete")
                 .flow("number-confirm-flow").run(NumberNotEnoughProcess.class)
-                    .step("number-cancel-entered",this::hasUserEnteredCancel,true).continueAtRoot()
+                    .step("number-cancel-entered",this::hasUserEnteredCancel,true).continueAt("shelf-question")
                     .step("number-short-entered",this::hasUserEnteredShort).continueAt("short-question")
                     .step("number-damage-entered",this::hasUserEnteredDamage).continueAt("damage-question")
 
@@ -119,6 +120,10 @@ public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHan
 
     private boolean hasPickFinished(CliHandler<PtgState> cliHandler) {
         return cliHandler.getState().isPickFinished();
+    }
+
+    private boolean nextItemNotFound(CliHandler<PtgState> cliHandler) {
+        return !cliHandler.getState().isNextItemFound();
     }
 
     private boolean hasPickNotFinished(CliHandler<PtgState> cliHandler) {

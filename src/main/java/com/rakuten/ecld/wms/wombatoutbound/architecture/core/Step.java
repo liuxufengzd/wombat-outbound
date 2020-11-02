@@ -142,7 +142,6 @@ public class Step {
      */
     public Flow continueAtRoot() {
         continueAtRootFlag = true;
-        flow.setContinueAtRootFlag();
         return flow;
     }
 
