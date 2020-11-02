@@ -88,10 +88,7 @@ public class Flow {
 
     /**
      * Define a new root step. Root step is a special step which is recorded in the response when
-     * it calls another flow whose continueAtRootFlag is true. If any step(not root step) in this
-     * callee flow calls any other flow whose continueAtRootFlag is true, the root step will be
-     * passed to the third flow and be recorded. The continueAtRootFlag is set true only if the
-     * flow contains any step that calls continueAtRoot method.
+     * it calls another flow. The root step will be passed to the third flow and be recorded.
      *
      * @param stepName  the name of the root step
      * @param condition the executing condition of the root step
