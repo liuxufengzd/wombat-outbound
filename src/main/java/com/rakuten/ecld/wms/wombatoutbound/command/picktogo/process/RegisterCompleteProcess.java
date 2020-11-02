@@ -8,11 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class StartPtg extends AbstractBaseStepHandler<PtgState> {
+public class RegisterCompleteProcess extends AbstractBaseStepHandler<PtgState> {
     @Override
     public void process(CliHandler<PtgState> cliHandler) {
-        log.info("step --> start pick to go");
+        log.info("step --> register complete process");
 
-        cliHandler.response(messageSourceUtil.getMessage("outbound.command.ptg.start_ptg"));
+        cliHandler.response(messageSourceUtil.getMessage("outbound.command.ptg.complete_register"));
+        cliHandler.response(messageSourceUtil.getMessage("outbound.common.start_pick"));
     }
 }

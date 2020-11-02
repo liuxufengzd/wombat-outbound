@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rakuten.ecld.wms.wombatoutbound.mapper.BadItemMapper">
+    <update id="setBadFlag">
+        update t_delivery_item
+        set sd_flag = 1
+        where delivery_code = #{delivery_code} and item_code = #{item_code}
+    </update>
+
+    <update id="removeBadFlag">
+        update t_delivery_item
+        set sd_flag = 0
+        where item_code = #{item_code}
+    </update>
+
+    <insert id="addBadItem">
+        insert into t_bad_item(delivery_code,item_code,type,number) values(#{delivery_code},#{item_code},#{type},#{number})
+        on duplicate key update number = number + #{number}
+    </insert>
+
+    <select id="getBadItemNumber">
+        select sum(number)
+        from t_bad_item
+        where delivery_code = #{delivery_code} and item_code = #{item_code}
+    </select>
+
+    <select id="getBadItems" resultType="badItem">
+        select a.box_area, a.box_label, b.delivery_code, b.item_code, b.number, b.type
+        from t_delivery a
+            left join t_bad_item b
+        on a.code = b.delivery_code
+    </select>
+
+    <delete id="fixBadItem">
+        delete from t_bad_item where item_code = #{item_code}
+    </delete>
+</mapper>

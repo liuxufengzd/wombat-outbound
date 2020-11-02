@@ -20,7 +20,7 @@ import java.util.Optional;
  */
 public class ModelRunner {
     private final CliHandler cliHandler;
-    private String latestStepName;
+    private final String latestStepName;
     private Step latestStep;
     private Step stepPosition;
     private int consumeIndex = 2;

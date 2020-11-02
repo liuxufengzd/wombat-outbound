@@ -13,6 +13,6 @@ public class ContinueProcess extends AbstractBaseStepHandler<PtgState> {
     public void process(CliHandler<PtgState> cliHandler) {
         log.info("step --> continue process");
 
-        // process
+        cliHandler.response(messageSourceUtil.getMessage("outbound.common.continue"));
     }
 }

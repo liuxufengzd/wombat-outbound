@@ -2,6 +2,7 @@ package com.rakuten.ecld.wms.wombatoutbound.architecture.common;
 
 import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.CliHandler;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.util.MessageSourceUtil;
+import com.rakuten.ecld.wms.wombatoutbound.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,7 @@ public abstract class AbstractBaseStepHandler<T> implements StepHandler<T> {
         return false;
     }
 
+    // need to do more ?
     protected boolean matchPattern(CliHandler<T> cliHandler, String pattern) {
         if (!Pattern.matches(pattern, cliHandler.getInput())) {
             cliHandler.fail(messageSourceUtil.getMessage("outbound.common.input.invalid"));
@@ -44,11 +46,20 @@ public abstract class AbstractBaseStepHandler<T> implements StepHandler<T> {
         return true;
     }
 
+    protected void failHandler(CliHandler<T> cliHandler, BusinessException e){
+        String message = messageSourceUtil.getMessage(e.getMessage());
+        if ("".equals(message))
+            cliHandler.fail(e.getMessage());
+        else cliHandler.fail(message);
+    }
+
     public abstract void process(CliHandler<T> cliHandler);
 
+    // Optional to override if the input data has to be verified
     public boolean isInputValid(CliHandler<T> cliHandler){
         return true;
     }
 
+    // Optional to override if some post process has to be run when the input data is invalid
     public void invalidPostProcess(CliHandler<T> cliHandler){}
 }

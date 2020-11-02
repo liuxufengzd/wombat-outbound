@@ -3,7 +3,7 @@ package com.rakuten.ecld.wms.wombatoutbound.command.picktogo.process;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.common.AbstractBaseStepHandler;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.CliHandler;
 import com.rakuten.ecld.wms.wombatoutbound.command.picktogo.model.PtgState;
-import com.rakuten.ecld.wms.wombatoutbound.exception.BusinessException;
+import com.rakuten.ecld.wms.wombatoutbound.service.command.common.BadItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,28 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class NumberNotEnoughEstimate extends AbstractBaseStepHandler<PtgState> {
+public class NumberNotEnoughProcess extends AbstractBaseStepHandler<PtgState> {
+    private final BadItemService badItemService;
 
     @Override
     public void process(CliHandler<PtgState> cliHandler) {
         log.info("step --> number not enough estimate");
 
-        try {
-            /**
-             * call service layer (step split db)
-             */
-        }catch (BusinessException e){
-            cliHandler.fail(messageSourceUtil.getMessage(e.getMessage()));
-        }
-    }
-
-    @Override
-    public boolean isInputValid(CliHandler<PtgState> cliHandler) {
-        return true;
-    }
-
-    @Override
-    public void invalidPostProcess(CliHandler<PtgState> cliHandler) {
-
+        int number = cliHandler.getState().getNumberExcludeBadItem() - badItemService.badItemNumber(cliHandler.getState().getItem());
+        cliHandler.response(messageSourceUtil.getMessage("outbound.command.ptg.not_enough_number",new String[]{String.valueOf(number)}));
     }
 }

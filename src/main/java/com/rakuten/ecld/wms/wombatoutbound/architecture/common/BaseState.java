@@ -6,8 +6,11 @@ import lombok.Setter;
 import java.util.HashMap;
 import java.util.Map;
 
-// If we run a model with any step that contains continueAtRoot or runAndContinueAtRoot,
-// the state class has to extends this baseState class
+/**
+ * If we run a model with any step that contains continueAtRoot or runAndContinueAtRoot,
+ * the state class has to extends this baseState class
+ */
+
 @Getter
 @Setter
 public class BaseState {

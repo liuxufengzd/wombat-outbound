@@ -192,7 +192,8 @@ public class Step {
     public Step canEnd(Class<? extends StepHandler> handlerType, String continueAt) {
         allowShortcut(Action.END);
         flow.flow(stepName + "-end", true).after(c -> "end".equals(c.getInput()), this.getName())
-                .step(stepName + "-end").size(1).inputType(InputType.ALPHABETIC).allowShortcut(Action.YES, Action.NO).run(EndConfirmQuestion.class)
+                .step(stepName + "-end").size(1).inputType(InputType.ALPHABETIC).allowShortcut(Action.YES, Action.NO).run(
+            EndConfirmQuestion.class)
                 .step(stepName + "-end-yn-question", c -> {
                     boolean result = "y".equals(c.getInput()) || "n".equals(c.getInput());
                     if (!result) {

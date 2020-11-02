@@ -13,6 +13,6 @@ public class RegisterStartProcess extends AbstractBaseStepHandler<PtgState> {
     public void process(CliHandler<PtgState> cliHandler) {
         log.info("step --> register start process");
 
-        // process
+        cliHandler.response(messageSourceUtil.getMessage("outbound.command.ptg.start_register"));
     }
 }
