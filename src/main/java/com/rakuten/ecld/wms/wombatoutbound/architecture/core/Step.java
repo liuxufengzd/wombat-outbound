@@ -195,10 +195,7 @@ public class Step {
             EndConfirmQuestion.class)
                 .step(stepName + "-end-yn-question", c -> {
                     boolean result = "y".equals(c.getInput()) || "n".equals(c.getInput());
-                    if (!result) {
-                        c.fail("y/nで入力してください");
-                        c.response("y/n？");
-                    }
+                    if (!result) c.fail("y/nで入力してください");
                     return result;
                 }, true).run(handlerType)
                 .step(stepName + "-end-cancel", c -> "n".equals(c.getInput())).continueAt(continueAt);
