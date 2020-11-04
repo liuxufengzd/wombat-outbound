@@ -57,7 +57,7 @@ public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHan
                     .step("box-label-question").size(BOX_LABEL_MAX).allowShortcut(Action.CHGDELI).run(BoxLabelQuestion.class)
                     .step("box-label-estimate", true).run(BoxLabelEstimate.class)
                     .step("register-confirm").run(RegisterConfirmProcess.class)
-                    .step("register-uncompleted", this::hasBatchNotRegistered).continueAt("register-question")
+                    .step("register-uncompleted", c->!hasBatchRegistered(c)).continueAt("register-question")
                     .step("complete-register").run(RegisterCompleteProcess.class)
                     .step("start-pick").run(FindPickItemProcess.class)
                     .step("item-not-found",this::nextItemNotFound).continueAt("QA-process")
@@ -72,7 +72,7 @@ public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHan
                     .rootStep("pick-box-question").size(BOX_LABEL_MAX).allowShortcut(Action.BREAK, Action.SHORT, Action.DAMAGE).run(PickBoxQuestion.class)
                     .step("pick-box-estimate",true).run(PickBoxEstimate.class)
                     .step("batch-estimate").run(BatchEstimate.class)
-                    .step("batch-not-picked", this::hasPickNotFinished).continueAt("start-pick")
+                    .step("batch-not-picked", c->!hasPickFinished(c)).continueAt("start-pick")
                     .step("QA-process").run(QAProcess.class)
                     .step("continue-question").run(ContinueQuestion.class)
                     .YNStep(null,"delivery-question")
@@ -124,14 +124,6 @@ public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHan
 
     private boolean nextItemNotFound(CliHandler<PtgState> cliHandler) {
         return !cliHandler.getState().isNextItemFound();
-    }
-
-    private boolean hasPickNotFinished(CliHandler<PtgState> cliHandler) {
-        return !hasPickFinished(cliHandler);
-    }
-
-    private boolean hasBatchNotRegistered(CliHandler<PtgState> cliHandler) {
-        return !hasBatchRegistered(cliHandler);
     }
 
     private boolean numberMoreThanOne(CliHandler<PtgState> cliHandler){
