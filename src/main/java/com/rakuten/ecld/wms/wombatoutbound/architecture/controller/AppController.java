@@ -63,6 +63,7 @@ public class AppController {
     public Object runCommand(@RequestBody RequestObject reqObj, @RequestHeader Map<String, String> headers) {
         reqObj.log();
         String token = jwtTokenUtil.getToken(headers);
+
         // for old framework
         if (reqObj.getProcess().equals("rac")){
             ClibRequestObject requestObject = new ClibRequestObject();
@@ -73,6 +74,7 @@ public class AppController {
             ClibResponseObject responseObject = cliExecutor.execute(requestObject, token);
             log.info("response:"+requestObject);
             return responseObject;
+
         }else {
             ResponseObject response = executor.execute(reqObj, token);
             log.info("Response: " + response);
