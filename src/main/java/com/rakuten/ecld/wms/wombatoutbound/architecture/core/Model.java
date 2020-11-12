@@ -1,6 +1,6 @@
 package com.rakuten.ecld.wms.wombatoutbound.architecture.core;
 
-import com.rakuten.ecld.wms.wombatoutbound.architecture.common.HandlerFactory;
+import com.rakuten.ecld.wms.wombatoutbound.architecture.common.StepHandlerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,10 +17,10 @@ import java.util.Map;
 public class Model {
     private final List<Flow> flows = new ArrayList<>();
     private final Map<Step, String> unMappedSteps = new HashMap<>();
-    private final HandlerFactory handlerFactory;
+    private final StepHandlerFactory stepHandlerFactory;
 
-    public Model(HandlerFactory handlerFactory) {
-        this.handlerFactory = handlerFactory;
+    public Model(StepHandlerFactory stepHandlerFactory) {
+        this.stepHandlerFactory = stepHandlerFactory;
     }
 
     Flow getMainFlow() {
@@ -31,8 +31,8 @@ public class Model {
         return unMappedSteps;
     }
 
-    HandlerFactory getHandlerFactory() {
-        return handlerFactory;
+    StepHandlerFactory getStepHandlerFactory() {
+        return stepHandlerFactory;
     }
 
     void addFlow(Flow flow) {

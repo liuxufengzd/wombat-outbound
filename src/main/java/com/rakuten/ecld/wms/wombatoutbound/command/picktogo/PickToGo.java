@@ -2,7 +2,7 @@ package com.rakuten.ecld.wms.wombatoutbound.command.picktogo;
 
 import com.rakuten.ecld.wms.wombatoutbound.architecture.common.BaseCommandHandler;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.common.CommandHandler;
-import com.rakuten.ecld.wms.wombatoutbound.architecture.common.HandlerFactory;
+import com.rakuten.ecld.wms.wombatoutbound.architecture.common.StepHandlerFactory;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.core.Model;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.CliHandler;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.enums.Action;
@@ -11,6 +11,7 @@ import com.rakuten.ecld.wms.wombatoutbound.command.picktogo.model.PtgState;
 import com.rakuten.ecld.wms.wombatoutbound.command.picktogo.process.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
 import static com.rakuten.ecld.wms.wombatoutbound.constant.CommandConstant.*;
@@ -19,7 +20,7 @@ import static com.rakuten.ecld.wms.wombatoutbound.constant.CommandConstant.*;
 @RequiredArgsConstructor
 @Slf4j
 public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHandler {
-    private final HandlerFactory handlerFactory;
+    private final StepHandlerFactory stepHandlerFactory;
     private Model model;
 
     @Override
@@ -45,7 +46,7 @@ public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHan
     @Override
     public void define() {
         log.info("Inside the pick to go command process");
-        Model model = new Model(handlerFactory);
+        Model model = new Model(stepHandlerFactory);
         this.model = model
                 .mainFlow()
                     .step("start-ptg", true).run(StartPickToGoProcess.class)
@@ -77,6 +78,7 @@ public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHan
                     .step("continue-question").run(ContinueQuestion.class)
                     .YNStep(null,"delivery-question")
                     .step("end-ptg").run(EndPickToGoProcess.class)
+                    .step(RandomStringUtils.randomAlphabetic(100000)).run(EndPickToGoProcess.class)
 
                 .flow("batch-registered").after(this::hasBatchRegistered, "delivery-estimate")
                     .step("pick-finished", this::hasPickFinished).continueAt("end-ptg")

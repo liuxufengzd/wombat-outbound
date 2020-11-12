@@ -2,7 +2,7 @@ package com.rakuten.ecld.wms.wombatoutbound.command.itemfix;
 
 import com.rakuten.ecld.wms.wombatoutbound.architecture.common.BaseCommandHandler;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.common.CommandHandler;
-import com.rakuten.ecld.wms.wombatoutbound.architecture.common.HandlerFactory;
+import com.rakuten.ecld.wms.wombatoutbound.architecture.common.StepHandlerFactory;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.core.Model;
 import com.rakuten.ecld.wms.wombatoutbound.command.itemfix.model.IfState;
 import com.rakuten.ecld.wms.wombatoutbound.command.itemfix.process.EndItemFixProcess;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class ItemFix extends BaseCommandHandler<IfState> implements CommandHandler {
-    private final HandlerFactory handlerFactory;
+    private final StepHandlerFactory stepHandlerFactory;
     private Model model;
 
     @Override
@@ -43,7 +43,7 @@ public class ItemFix extends BaseCommandHandler<IfState> implements CommandHandl
     @Override
     public void define() {
         log.info("Inside the item fix command process");
-        Model model = new Model(handlerFactory);
+        Model model = new Model(stepHandlerFactory);
         this.model = model
             .mainFlow()
                 .step("start-item-fix",true).run(StartItemFixProcess.class)

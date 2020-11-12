@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="wombat-clib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../WombatPro/wombat-clib/out/artifacts/wombat_clib/wombat-clib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

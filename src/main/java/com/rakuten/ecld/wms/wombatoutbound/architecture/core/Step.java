@@ -117,7 +117,7 @@ public class Step {
      * @return the flow contains this step
      */
     public Flow run(Class<? extends StepHandler> handlerType) {
-        stepHandler = model.getHandlerFactory().createStepHandler(handlerType);
+        stepHandler = model.getStepHandlerFactory().createStepHandler(handlerType);
         return flow;
     }
 
