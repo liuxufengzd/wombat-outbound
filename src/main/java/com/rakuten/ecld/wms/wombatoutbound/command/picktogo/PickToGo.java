@@ -78,7 +78,6 @@ public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHan
                     .step("continue-question").run(ContinueQuestion.class)
                     .YNStep(null,"delivery-question")
                     .step("end-ptg").run(EndPickToGoProcess.class)
-                    .step(RandomStringUtils.randomAlphabetic(100000)).run(EndPickToGoProcess.class)
 
                 .flow("batch-registered").after(this::hasBatchRegistered, "delivery-estimate")
                     .step("pick-finished", this::hasPickFinished).continueAt("end-ptg")
