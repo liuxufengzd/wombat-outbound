@@ -70,8 +70,11 @@ public class ModelRunner {
                 if (consumeIndex > 0) {
                     runStep(stepToRun);
                 } else break;
-                // In our business, the xxxQuestion step must be followed by xxxEstimate step
-                // So the question phrase will be repeated if the xxxEstimate step is failed
+                /**
+                 *  In our business, the xxxQuestion step must be followed by xxxEstimate step
+                 *  So the question phrase will be repeated if the xxxEstimate step is failed
+                 *  pay attention that the repeated step is the latest step that run successfully
+                 */
                 if (cliHandler.isFailed()) {
                     doExecute(latestStep);
                     break;
@@ -124,7 +127,8 @@ public class ModelRunner {
     private Step findNextStepToRun() {
         if (!skipFlag && stepPosition.getFirstChoice() != null) {
             Step nextStep = stepPosition.getFirstChoice();
-            updateBaseState(stepPosition, nextStep);
+            if (cliHandler.getState() instanceof BaseState)
+                updateBaseState(stepPosition, nextStep);
             return nextStep;
         }
         List<Flow> afterFlows = stepPosition.getAfterFlows();
@@ -135,7 +139,8 @@ public class ModelRunner {
             return stepPosition.getNextStep();
         Flow chosenFlow = nextFlow.get();
         Step firstStep = chosenFlow.getFirstStep();
-        updateBaseState(stepPosition, firstStep);
+        if (cliHandler.getState() instanceof BaseState)
+            updateBaseState(stepPosition, firstStep);
         if (chosenFlow.isConsume())
             consumeIndex--;
 

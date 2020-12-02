@@ -17,7 +17,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f9636ce8-906f-4ae1-9f04-9d2aaf6e8ec8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rakuten/ecld/wms/wombatoutbound/architecture/core/Flow.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rakuten/ecld/wms/wombatoutbound/architecture/core/Model.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rakuten/ecld/wms/wombatoutbound/architecture/core/ModelRunner.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/rakuten/ecld/wms/wombatoutbound/architecture/core/Step.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +75,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../WombatPro" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/rakuten/ecld/wms/wombatoutbound" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -94,9 +97,9 @@
       <recent name="com.rakuten.ecld.wms.wombatoutbound.command.picktogo" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Development_lxf\RakutenProjects\myproject\outbound-formal\src\main\java\com\rakuten\ecld\wms\wombatoutbound" />
       <recent name="C:\Development_lxf\RakutenProjects\myproject\outbound-formal\src\main\resources" />
       <recent name="C:\Development_lxf\RakutenProjects\myproject\outbound-formal\src\main\java\com\rakuten\ecld\wms\wombatoutbound\service\command\picktogo" />
-      <recent name="C:\Development_lxf\RakutenProjects\myproject\outbound-formal\src\main\java\com\rakuten\ecld\wms\wombatoutbound" />
       <recent name="D:\IntelliJ IDEA 2020.1\RakutenPro\Microservice\outbound-formal\src\main\java\com\rakuten\ecld\wms\wombatoutbound" />
       <recent name="D:\IntelliJ IDEA 2020.1\RakutenPro\Microservice\outbound-formal\src\main\java\com\rakuten\ecld\wms\wombatoutbound\command\picktogo\process" />
     </key>

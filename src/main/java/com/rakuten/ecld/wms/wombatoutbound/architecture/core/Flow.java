@@ -1,9 +1,6 @@
 package com.rakuten.ecld.wms.wombatoutbound.architecture.core;
 
-import com.rakuten.ecld.wms.wombatoutbound.architecture.common.Condition;
-import com.rakuten.ecld.wms.wombatoutbound.architecture.common.StepHandler;
-import com.rakuten.ecld.wms.wombatoutbound.architecture.common.YNEstimate;
-import com.rakuten.ecld.wms.wombatoutbound.architecture.common.YNQuestion;
+import com.rakuten.ecld.wms.wombatoutbound.architecture.common.*;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.enums.Action;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.enums.InputType;
 
@@ -123,6 +120,14 @@ public class Flow {
         return YNStep(ifN, null);
     }
 
+    public Flow YNStep(String ifN, boolean isInfo) {
+        return YNStep(ifN, null, isInfo);
+    }
+
+    public Flow YNStep(String ifN, String ifY) {
+        return YNStep(ifN, ifY, false);
+    }
+
     /**
      * Ask the HT to input y/n.
      * IfN and ifY determine the step to continue at if "n/y" is inputted.
@@ -131,12 +136,14 @@ public class Flow {
      *
      * @param ifN if "n" is inputted then continue at the step.
      * @param ifY if "y" is inputted then continue at the step
-     * @return
+     * @param isInfo indicate that if the y/n? question gets the response style of INFO
+     * @return This flow
      */
-    public Flow YNStep(String ifN, String ifY) {
+    public Flow YNStep(String ifN, String ifY, boolean isInfo) {
         String name = steps.get(steps.size() - 1).getName();
         Flow ynFlow = step(name + "-ynStep0").
-                size(1).inputType(InputType.ALPHABETIC).allowShortcut(Action.YES, Action.NO).run(YNQuestion.class)
+                size(1).inputType(InputType.ALPHABETIC).allowShortcut(
+            Action.YES, Action.NO).run(isInfo ? YNQuestionInfo.class : YNQuestion.class)
                 .step(name + "-ynStep1", true).run(YNEstimate.class);
         if (ifN != null) {
             if (ifN.equalsIgnoreCase("rootStep")) {
