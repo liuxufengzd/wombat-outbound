@@ -2,8 +2,6 @@ package com.rakuten.ecld.wms.wombatoutbound.architecture.common;
 
 import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.CliHandler;
 
-import static com.rakuten.ecld.wms.wombatoutbound.constant.CommandConstant.ROLE_VETERAN;
-
 public class BaseCommandHandler<T> {
 
     protected boolean hasUserEnteredCancel(final CliHandler<T> cliHandler) {
@@ -30,7 +28,19 @@ public class BaseCommandHandler<T> {
         return "cdl".equals(cliHandler.getInput()) || "chgdeli".equals(cliHandler.getInput());
     }
 
-    protected boolean isVeteran(final CliHandler<T> cliHandler) {
-        return cliHandler.getUser().getRoles().contains(ROLE_VETERAN);
+    protected boolean hasUserEnteredChangeFloor(final CliHandler<T> cliHandler) {
+        String input = cliHandler.getInput();
+        return "chgfloor".equals(input) || "chgf".equals(input);
+    }
+    
+    protected boolean hasUserEnteredEnd(final CliHandler<T> cliHandler) {
+        String input = cliHandler.getInput();
+        return "end".equals(input);
+    }
+    
+    protected boolean isAborted(final CliHandler<T> cliHandler) {
+        boolean result = cliHandler.isAbort();
+        cliHandler.setAbort(false);
+        return result;
     }
 }

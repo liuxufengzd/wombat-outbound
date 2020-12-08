@@ -7,6 +7,7 @@ import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.response.Response
 import com.rakuten.ecld.wms.wombatoutbound.architecture.enums.ResponseStyle;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.enums.Sound;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -18,9 +19,13 @@ public class CliHandler<T> extends CliData<T> {
     private Activity logActivity;
     private Sound soundId;
     private final List<ResponseEntry> response = new ArrayList<>();
+    @Setter
     private boolean failed;
     private CliParams cliParams;
     private ModelRunner modelRunner;
+    private boolean isReturn;
+    @Setter
+    private boolean isAbort;
 
     public void response(ResponseEntry responseEntry) {
         this.response.add(responseEntry);
@@ -47,19 +52,15 @@ public class CliHandler<T> extends CliData<T> {
         this.soundId = Sound.SOUND_ERROR;
     }
 
-    public void fail(ResponseEntry responseEntry) {
-        this.fail();
-        response(responseEntry);
-    }
-
     public void fail(String response) {
         this.fail();
         response(response, ResponseStyle.ERROR);
     }
 
-    public void fail(String response, ResponseStyle style) {
-        this.fail();
-        response(response, style);
+    public void abort(String msg) {
+        this.isAbort = true;
+        response(msg, ResponseStyle.ERROR);
+        this.soundId = Sound.SOUND_ERROR;
     }
 
     public void sound(Sound soundType) {
@@ -68,5 +69,9 @@ public class CliHandler<T> extends CliData<T> {
 
     public void logActivity(String type, long count) {
         logActivity = Activity.builder().type(type).count(count).build();
+    }
+
+    public void setReturn(){
+        this.isReturn = true;
     }
 }

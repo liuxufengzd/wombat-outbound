@@ -5,6 +5,7 @@ import com.rakuten.ecld.wms.wombatclib.domain.request.ClibRequestObject;
 import com.rakuten.ecld.wms.wombatclib.domain.response.ClibResponseObject;
 import com.rakuten.ecld.wms.wombatclib.service.CommandExecutor;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.constant.V1Plus;
+import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.request.HeaderInfo;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.request.RequestObject;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.response.ResponseObject;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.domain.response.ServiceCommandObject;
@@ -62,10 +63,12 @@ public class AppController {
     @PostMapping(V1Plus.Endpoints.RUN_COMMAND)
     public Object runCommand(@RequestBody RequestObject reqObj, @RequestHeader Map<String, String> headers) {
         reqObj.log();
-        String token = jwtTokenUtil.getToken(headers);
+        HeaderInfo headerInfo =
+            new HeaderInfo(jwtTokenUtil.getToken(headers), headers.get("terminal-id"), headers.get("seller-type"));
 
         // for old framework
         if (reqObj.getProcess().equals("rac")){
+            String token = jwtTokenUtil.getToken(headers);
             ClibRequestObject requestObject = new ClibRequestObject();
             requestObject.setInput(reqObj.getInput());
             requestObject.setProcess(reqObj.getProcess());
@@ -76,7 +79,7 @@ public class AppController {
             return responseObject;
 
         }else {
-            ResponseObject response = executor.execute(reqObj, token);
+            ResponseObject response = executor.execute(reqObj, headerInfo);
             log.info("Response: " + response);
             return response;
         }

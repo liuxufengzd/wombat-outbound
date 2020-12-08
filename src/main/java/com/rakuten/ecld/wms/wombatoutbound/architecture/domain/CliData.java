@@ -12,6 +12,8 @@ public class CliData<T> {
     private final String centerCode;
     private final String business;
     private final JWTUserDetail user;
+    private final String terminalId;
+    private final String sellerType;
 
     @SuppressWarnings("unchecked")
     public T getState() {

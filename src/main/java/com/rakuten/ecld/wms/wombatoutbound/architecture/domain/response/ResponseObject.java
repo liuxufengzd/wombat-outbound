@@ -1,6 +1,7 @@
 package com.rakuten.ecld.wms.wombatoutbound.architecture.domain.response;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.rakuten.ecld.wms.wombatoutbound.architecture.enums.FlowEndType;
 import com.rakuten.ecld.wms.wombatoutbound.architecture.enums.Sound;
 import lombok.*;
 
@@ -20,4 +21,5 @@ public class ResponseObject {
     private JsonNode stateData;
     private Activity logActivity;
     private Sound soundId;
+    private FlowEndType flowEndType;
 }

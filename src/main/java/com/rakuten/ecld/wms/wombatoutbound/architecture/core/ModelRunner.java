@@ -70,14 +70,20 @@ public class ModelRunner {
                 if (consumeIndex > 0) {
                     runStep(stepToRun);
                 } else break;
-                /**
-                 *  In our business, the xxxQuestion step must be followed by xxxEstimate step
-                 *  So the question phrase will be repeated if the xxxEstimate step is failed
-                 *  pay attention that the repeated step is the latest step that run successfully
-                 */
                 if (cliHandler.isFailed()) {
-                    doExecute(latestStep);
-                    break;
+                    String failToJump = stepToRun.getFailToJump();
+                    Step repeatStep = failToJump == null ? latestStep : model.findStep(failToJump);
+                    if (repeatStep == null)
+                        throw new RuntimeException("Cannot find the step: " + failToJump);
+                    cliHandler.setFailed(false);
+                    // consume flag of this step will be ignored
+                    runStep(repeatStep);
+                    if (stepToRun.isBreakMode()){
+                        break;
+                    }else {
+                        stepToRun = findNextStepToRun();
+                        continue;
+                    }
                 }
                 if (stepToRun.isContinueAtRootFlag() && !skipFlag) {
                     String flowName = stepToRun.getFlow().getFlowName();
@@ -103,17 +109,13 @@ public class ModelRunner {
         if ((condition == null || condition.evaluate(cliHandler)) &&
                 (step.getCaller().isEmpty() || step.getCaller().equals(flowToCallerStep.get(step.getFlow().getFlowName())))) {
             skipFlag = false;
-            doExecute(step);
+            StepHandler stepHandler = step.getStepHandler();
+            if (stepHandler != null)
+                stepHandler.execute(cliHandler);
             if (!cliHandler.isFailed())
                 latestStep = step;
         } else skipFlag = true;
         stepPosition = step;
-    }
-
-    private void doExecute(Step step) {
-        StepHandler stepHandler = step.getStepHandler();
-        if (stepHandler != null)
-            stepHandler.execute(cliHandler);
     }
 
     /**

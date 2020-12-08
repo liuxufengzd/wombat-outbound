@@ -8,5 +8,6 @@ public enum Action {
     BREAK,
     SHORT,
     DAMAGE,
-    END
+    END,
+    CHGF
 }

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * If we run a model with any step that contains continueAtRoot or runAndContinueAtRoot,
+ * If we run a model with any step that contains continueAtRoot or runAndContinueAtRoot or callerIs,
  * the state class has to extends this baseState class
  */
 

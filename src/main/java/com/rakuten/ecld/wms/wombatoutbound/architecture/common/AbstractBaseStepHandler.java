@@ -31,19 +31,10 @@ public abstract class AbstractBaseStepHandler<T> implements StepHandler<T> {
 
     protected boolean isInputEmpty(CliHandler<T> cliHandler) {
         if (cliHandler.getInput().isBlank()) {
-            cliHandler.fail(messageSourceUtil.getMessage("outbound.common.input.empty"));
+            cliHandler.fail("入力してください");
             return true;
         }
         return false;
-    }
-
-    // need to do more ?
-    protected boolean matchPattern(CliHandler<T> cliHandler, String pattern) {
-        if (!Pattern.matches(pattern, cliHandler.getInput())) {
-            cliHandler.fail(messageSourceUtil.getMessage("outbound.common.input.invalid"));
-            return false;
-        }
-        return true;
     }
 
     protected void failHandler(CliHandler<T> cliHandler, BusinessException e){
@@ -62,4 +53,12 @@ public abstract class AbstractBaseStepHandler<T> implements StepHandler<T> {
 
     // Optional to override if some post process has to be run when the input data is invalid
     public void invalidPostProcess(CliHandler<T> cliHandler){}
+
+    protected boolean matchPattern(CliHandler<T> cliHandler, String pattern) {
+        if (!Pattern.matches(pattern, cliHandler.getInput())) {
+            cliHandler.fail(messageSourceUtil.getMessage("outbound.common.input.invalid"));
+            return false;
+        }
+        return true;
+    }
 }

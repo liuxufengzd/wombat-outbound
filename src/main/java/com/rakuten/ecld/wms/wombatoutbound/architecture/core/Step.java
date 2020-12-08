@@ -35,6 +35,8 @@ public class Step {
     private boolean continueAtRootFlag;
     private String caller = "";
     private final boolean rootStep;
+    private String failToJump;
+    private boolean breakMode = true;
 
     public Step(String stepName, Model model, Flow flow, Condition<?> condition, boolean consume, boolean rootStep) {
         this.stepName = stepName;
@@ -65,6 +67,10 @@ public class Step {
         return rootStep;
     }
 
+    boolean isBreakMode(){
+        return breakMode;
+    }
+
     Step getNextStep() {
         return nextStep;
     }
@@ -79,6 +85,10 @@ public class Step {
 
     Flow getFlow() {
         return flow;
+    }
+
+    public String getFailToJump() {
+        return failToJump;
     }
 
     boolean isContinueAtRootFlag() {
@@ -154,6 +164,24 @@ public class Step {
     public Step callerIs(String callerStepName) {
         caller = callerStepName;
         flow.setCallerFlag();
+        return this;
+    }
+
+    public Step ifFail(String stepName){
+        return ifFail(stepName, true);
+    }
+
+    /**
+     * Execute the assigned step if the current step is failed.
+     * If no step is assigned, then the latest step that is successfully run will be executed.
+     * @param stepName the name of the assigned step
+     * @param breakMode if true, the runner will stop running any other step after running the assigned step
+     *                  and return the response back immediately.
+     * @return this step
+     */
+    public Step ifFail(String stepName, boolean breakMode){
+        failToJump = stepName;
+        this.breakMode = breakMode;
         return this;
     }
 

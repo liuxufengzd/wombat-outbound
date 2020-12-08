@@ -11,7 +11,6 @@ import com.rakuten.ecld.wms.wombatoutbound.command.picktogo.model.PtgState;
 import com.rakuten.ecld.wms.wombatoutbound.command.picktogo.process.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
 import static com.rakuten.ecld.wms.wombatoutbound.constant.CommandConstant.*;
@@ -133,5 +132,9 @@ public class PickToGo extends BaseCommandHandler<PtgState> implements CommandHan
 
     private boolean numberNotEnough(CliHandler<PtgState> cliHandler){
         return Integer.parseInt(cliHandler.getInput()) < cliHandler.getState().getNumberExcludeBadItem();
+    }
+
+    private boolean isVeteran(CliHandler<PtgState> cliHandler){
+        return cliHandler.getUser().getRoles().contains(ROLE_VETERAN);
     }
 }
